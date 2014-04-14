@@ -1,0 +1,41 @@
+{
+    "name": "grunt-gitrevision",
+    "description": "Grunt task to add version and Git's revision information to your project.",
+    "version": "0.1.0",
+    "homepage": "https://github.com/miwurster/grunt-gitrevision",
+    "author": {
+        "name": "Michael Wurster",
+        "email": "miwurster@googlemail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/miwurster/grunt-gitrevision.git"
+    },
+    "bugs": {
+        "url": "https://github.com/miwurster/grunt-gitrevision/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/miwurster/grunt-gitrevision/blob/master/LICENSE"
+        }
+    ],
+    "engines": {
+        "node": ">= 0.8.0"
+    },
+    "scripts": {
+        "test": "grunt test"
+    },
+    "devDependencies": {
+        "grunt-contrib-jshint": "^0.9.2",
+        "grunt-contrib-clean": "^0.5.0",
+        "grunt-contrib-nodeunit": "^0.3.3",
+        "grunt": "~0.4.1"
+    },
+    "peerDependencies": {
+        "grunt": "~0.4.1"
+    },
+    "keywords": [
+        "gruntplugin"
+    ]
+}

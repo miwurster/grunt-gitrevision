@@ -2,49 +2,77 @@
  * grunt-gitrevision
  * https://github.com/miwurster/grunt-gitrevision
  *
- * Copyright (c) 2014 miwurster
+ * Copyright (c) 2014 Michael Wurster
  * Licensed under the MIT license.
  */
 
 'use strict';
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
+    grunt.registerMultiTask('gitrevision', 'Adds version and Git\'s revision information to your project files.', function () {
 
-  grunt.registerMultiTask('gitrevision', 'This plugin adds the version including the current git revision to a source file', function() {
-    // Merge task-specific and/or target-specific options with these defaults.
-    var options = this.options({
-      punctuation: '.',
-      separator: ', '
+        var options = this.options({
+            prefix: '[^\\-]version[\'"]?\\s*[:=]\\s*[\'"]',
+            replace: '[0-9a-zA-Z\\-_\\+\\.]+'
+        });
+
+        var pkg = grunt.file.readJSON('package.json');
+        var version = pkg.version;
+
+        this.files.forEach(function (file) {
+
+            if (typeof file.src !== 'string') {
+                grunt.fail.warn('You can only specify one src file.');
+            }
+
+//            var contents = file.src.filter(function (filepath) {
+//                // Remove nonexistent files (it's up to you to filter or warn here).
+//                if (!grunt.file.exists(filepath)) {
+//                    grunt.log.warn('Source file "' + filepath + '" not found.');
+//                    return false;
+//                } else {
+//                    return true;
+//                }
+//            }).map(function (filepath) {
+//                // Read and return the file's source.
+//                return grunt.file.read(filepath);
+//            }).join('\n');
+//            // Write joined contents to destination filepath.
+//            grunt.file.write(file.dest, contents);
+//            // Print a success message.
+//            grunt.log.writeln('File "' + file.dest + '" created.');
+        });
+
+
+//        this.files.forEach(function (filepath) {
+//
+//            grunt.log.error(JSON.stringify(filepath));
+//
+//            // Warn if a source file/pattern was invalid.
+//            if (!grunt.file.exists(filepath)) {
+//                grunt.log.error('Source file "' + filepath + '" not found.');
+//                return '';
+//            }
+//
+//            // Read file source.
+//            var pattern = new RegExp('(' + options.prefix + ')(' + options.replace + ')', 'g'),
+//                file = grunt.file.read(filepath),
+//                newfile = file.replace(pattern, '$1' + version),
+//                matches = pattern.exec(file);
+//
+//            if (!matches) {
+//                grunt.log.subhead('Pattern not found in file');
+//                grunt.log.writeln('Path: ' + filepath);
+//                grunt.log.writeln('Pattern: ' + pattern);
+//            } else {
+//                grunt.log.subhead('File updated');
+//                grunt.log.writeln('Path: ' + filepath);
+//                grunt.log.writeln('Old version: ' + matches.pop() + '. New version: ' + version + '.');
+//            }
+//
+//
+//            grunt.file.write(filepath, newfile);
+//        });
     });
-
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
-        }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
-
-      // Handle options.
-      src += options.punctuation;
-
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
-
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
-    });
-  });
-
 };

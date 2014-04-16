@@ -8,9 +8,13 @@
 
 'use strict';
 
+var exec = require('child_process').exec;
+
 module.exports = function (grunt) {
 
     grunt.registerMultiTask('gitrevision', 'Adds version and Git\'s revision information to your project files.', function () {
+
+        var done = this.async();
 
         var options = this.options({
             prefix: '[^\\-]version[\'"]?\\s*[:=]\\s*[\'"]',
@@ -18,7 +22,6 @@ module.exports = function (grunt) {
         });
 
         var pkg = grunt.file.readJSON('package.json');
-        var version = pkg.version;
 
         this.files.forEach(function (file) {
 
@@ -34,20 +37,31 @@ module.exports = function (grunt) {
                 grunt.fail.warn('Source file "' + filepath + '" not found.');
             }
 
-            var content = grunt.file.read(filepath);
+            // We use the number of commits as our revision
+            var cmd = 'git rev-list --count HEAD';
 
-            // Replace version
-            var pattern = new RegExp('(' + options.prefix + ')(' + options.replace + ')', 'g');
-            var output = content.replace(pattern, '$1' + version);
+            exec(cmd, function (error, stdout, stderr) {
 
-            grunt.file.write(file.dest, output);
+                var revision = stdout.replace(/(\r\n|\n|\r)/gm, "");
+                var version = pkg.version + '-b' + revision;
 
-            if (!pattern.exec(content)) {
-                grunt.log.error('Pattern not found in file "' + filepath + '"');
-                grunt.log.error('Pattern: ' + pattern);
-            } else {
-                grunt.log.ok('File "' + file.dest + '" created.');
-            }
+                var content = grunt.file.read(filepath);
+
+                // Apply the version string to the src file
+                var pattern = new RegExp('(' + options.prefix + ')(' + options.replace + ')', 'g');
+                var output = content.replace(pattern, '$1' + version);
+
+                grunt.file.write(file.dest, output);
+
+                if (!pattern.exec(content)) {
+                    grunt.log.error('Pattern not found in file "' + filepath + '"');
+                    grunt.log.error('Pattern: ' + pattern);
+                } else {
+                    grunt.log.ok('File "' + file.dest + '" created.');
+                }
+
+                done();
+            });
         });
     });
 };

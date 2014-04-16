@@ -14,8 +14,7 @@ module.exports = function (grunt) {
         jshint: {
             all: [
                 'Gruntfile.js',
-                'tasks/*.js',
-                '<%= nodeunit.tests %>'
+                'tasks/*.js'
             ],
             options: {
                 jshintrc: '.jshintrc'
@@ -23,9 +22,6 @@ module.exports = function (grunt) {
         },
         clean: {
             tests: ['tmp']
-        },
-        nodeunit: {
-            tests: ['test/*_test.js']
         },
         gitrevision: {
             default_options: {
@@ -41,8 +37,7 @@ module.exports = function (grunt) {
     grunt.loadTasks('tasks');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
-    grunt.registerTask('test', ['clean', 'gitrevision', 'nodeunit']);
+    grunt.registerTask('test', ['clean', 'gitrevision']);
     grunt.registerTask('default', ['jshint', 'test']);
 };

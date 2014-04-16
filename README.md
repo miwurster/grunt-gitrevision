@@ -2,6 +2,23 @@
 
 > Grunt task to add version and Git's revision information to your project files.
 
+The idea is to use the current Git commit count as the revision number and combine it with the version string from your `package.json`.
+
+We use the following command to determine Git's "revision" number:
+
+```shell
+git rev-list --count HEAD
+```
+
+Whenever a user/client comes back and tells you there is a bug in "revision" _1302_ you could use the following Git alias:
+
+```
+[alias]
+    show-rev-number = !sh -c 'git rev-list --reverse HEAD | nl | awk \"{ if(\\$1 == "$0") { print \\$2 }}\"'
+```
+
+Using `git show-rev-number 1302` will print the *hash* for "revision" _1302_
+
 ## Getting Started
 
 This plugin requires Grunt `~0.4.2`

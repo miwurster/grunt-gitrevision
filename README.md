@@ -19,6 +19,7 @@ Whenever a user/client comes back and tells you there is a bug in "revision" _13
 
 Using `git show-rev-number 1302` will print the **hash** for "revision" _1302_
 
+
 ## Getting Started
 
 This plugin requires Grunt `~0.4.2`
@@ -58,11 +59,24 @@ grunt.initConfig({
 
 ### Options
 
-#### options.prefix
+#### options.versionPattern
 Type: `String`
 Default value: `'[^\\-]version[\'"]?\\s*[:=]\\s*[\'"]'`
 
 A string value representing a regular expression to identify the preceding part of the actual version information.
+
+#### options.revisionPrefix
+Type: `String`
+Default value: `'-r'`
+
+A string value prefixing the revision number.
+
+#### options.revisionSuffix
+Type: `String`
+Default value: `''`
+
+A string value which should be appended to the revision information.
+
 
 ### Usage Examples
 

@@ -30,6 +30,15 @@ module.exports = function (grunt) {
                     'tmp/testing.js': ['test/fixtures/testing.js'],
                     'tmp/foo.js': ['test/fixtures/foo.js']
                 }
+            },
+            custom_options: {
+                options: {
+                    revisionPrefix: ' (Build ',
+                    revisionSuffix: ')'
+                },
+                files: {
+                    'tmp/custom.js': ['test/fixtures/testing.js']
+                }
             }
         }
     });

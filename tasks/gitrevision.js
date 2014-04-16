@@ -17,8 +17,10 @@ module.exports = function (grunt) {
         var done = this.async();
 
         var options = this.options({
-            prefix: '[^\\-]version[\'"]?\\s*[:=]\\s*[\'"]',
-            replace: '[0-9a-zA-Z\\-_\\+\\.]+'
+            versionPattern: '[^\\-]version[\'"]?\\s*[:=]\\s*[\'"]',
+            replacePattern: '[0-9a-zA-Z\\-_\\+\\.]+',
+            revisionPrefix: '-r',
+            revisionSuffix: ''
         });
 
         var pkg = grunt.file.readJSON('package.json');
@@ -43,12 +45,12 @@ module.exports = function (grunt) {
             exec(cmd, function (error, stdout, stderr) {
 
                 var revision = stdout.replace(/(\r\n|\n|\r)/gm, "");
-                var version = pkg.version + '-b' + revision;
+                var version = pkg.version + options.revisionPrefix + revision + options.revisionSuffix;
 
                 var content = grunt.file.read(filepath);
 
                 // Apply the version string to the src file
-                var pattern = new RegExp('(' + options.prefix + ')(' + options.replace + ')', 'g');
+                var pattern = new RegExp('(' + options.versionPattern + ')(' + options.replacePattern + ')', 'g');
                 var output = content.replace(pattern, '$1' + version);
 
                 grunt.file.write(file.dest, output);

@@ -17,7 +17,7 @@ Whenever a user/client comes back and tells you there is a bug in "revision" _13
     show-rev-number = !sh -c 'git rev-list --reverse HEAD | nl | awk \"{ if(\\$1 == "$0") { print \\$2 }}\"'
 ```
 
-Using `git show-rev-number 1302` will print the *hash* for "revision" _1302_
+Using `git show-rev-number 1302` will print the **hash** for "revision" _1302_
 
 ## Getting Started
 
@@ -66,7 +66,7 @@ A string value representing a regular expression to identify the preceding part 
 
 ### Usage Examples
 
-In this example, the default options are used to replace the version part `var version = '0';` from file `test/fixtures/testing.js`. So, if the input has the appropriate pattern the file with the actual version information is written to `tmp/testing.js`.
+In this example, the default options are used to replace the version part `var version = '0';` from file `test/fixtures/testing.js`. So, if the input file contains the appropriate pattern the task will replace it with the actual version information and writes the new content to the specified output file `tmp/testing.js`.
 
 ```js
 gitrevision: {

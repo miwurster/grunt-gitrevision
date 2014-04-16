@@ -22,57 +22,32 @@ module.exports = function (grunt) {
 
         this.files.forEach(function (file) {
 
-            if (typeof file.src !== 'string') {
-                grunt.fail.warn('You can only specify one src file.');
+            var filepath = file.src[0];
+
+            if (file.src.length === 0) {
+                grunt.fail.warn('You have to specify a valid src file in ' + JSON.stringify(file) + '.');
+            }
+            if (file.src.length > 1) {
+                grunt.fail.warn('You can only specify one src file in ' + JSON.stringify(file.src) + '.');
+            }
+            if (!grunt.file.exists(filepath)) {
+                grunt.fail.warn('Source file "' + filepath + '" not found.');
             }
 
-//            var contents = file.src.filter(function (filepath) {
-//                // Remove nonexistent files (it's up to you to filter or warn here).
-//                if (!grunt.file.exists(filepath)) {
-//                    grunt.log.warn('Source file "' + filepath + '" not found.');
-//                    return false;
-//                } else {
-//                    return true;
-//                }
-//            }).map(function (filepath) {
-//                // Read and return the file's source.
-//                return grunt.file.read(filepath);
-//            }).join('\n');
-//            // Write joined contents to destination filepath.
-//            grunt.file.write(file.dest, contents);
-//            // Print a success message.
-//            grunt.log.writeln('File "' + file.dest + '" created.');
+            var content = grunt.file.read(filepath);
+
+            // Replace version
+            var pattern = new RegExp('(' + options.prefix + ')(' + options.replace + ')', 'g');
+            var output = content.replace(pattern, '$1' + version);
+
+            grunt.file.write(file.dest, output);
+
+            if (!pattern.exec(content)) {
+                grunt.log.error('Pattern not found in file "' + filepath + '"');
+                grunt.log.error('Pattern: ' + pattern);
+            } else {
+                grunt.log.ok('File "' + file.dest + '" created.');
+            }
         });
-
-
-//        this.files.forEach(function (filepath) {
-//
-//            grunt.log.error(JSON.stringify(filepath));
-//
-//            // Warn if a source file/pattern was invalid.
-//            if (!grunt.file.exists(filepath)) {
-//                grunt.log.error('Source file "' + filepath + '" not found.');
-//                return '';
-//            }
-//
-//            // Read file source.
-//            var pattern = new RegExp('(' + options.prefix + ')(' + options.replace + ')', 'g'),
-//                file = grunt.file.read(filepath),
-//                newfile = file.replace(pattern, '$1' + version),
-//                matches = pattern.exec(file);
-//
-//            if (!matches) {
-//                grunt.log.subhead('Pattern not found in file');
-//                grunt.log.writeln('Path: ' + filepath);
-//                grunt.log.writeln('Pattern: ' + pattern);
-//            } else {
-//                grunt.log.subhead('File updated');
-//                grunt.log.writeln('Path: ' + filepath);
-//                grunt.log.writeln('Old version: ' + matches.pop() + '. New version: ' + version + '.');
-//            }
-//
-//
-//            grunt.file.write(filepath, newfile);
-//        });
     });
 };

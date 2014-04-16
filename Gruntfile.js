@@ -31,7 +31,8 @@ module.exports = function (grunt) {
             default_options: {
                 // options: {},
                 files: {
-                    'tmp/testing.js': ['test/fixtures/testing.js']
+                    'tmp/testing.js': ['test/fixtures/testing.js'],
+                    'tmp/foo.js': ['test/fixtures/foo.js']
                 }
             }
         }

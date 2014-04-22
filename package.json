@@ -1,7 +1,7 @@
 {
     "name": "grunt-gitrevision",
     "description": "Grunt task to add version and Git's revision information to your project files.",
-    "version": "0.2.0",
+    "version": "0.1.1",
     "homepage": "https://github.com/miwurster/grunt-gitrevision",
     "author": {
         "name": "Michael Wurster",

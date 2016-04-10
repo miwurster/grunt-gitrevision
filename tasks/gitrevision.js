@@ -25,27 +25,29 @@ module.exports = function (grunt) {
 
         var pkg = grunt.file.readJSON('package.json');
 
-        this.files.forEach(function (file) {
+        // We use the number of commits as our revision
+        var cmd = 'git rev-list --count HEAD';
 
-            var filepath = file.src[0];
+        var definedFiles = this.files;
 
-            if (file.src.length === 0) {
-                grunt.fail.warn('You have to specify a valid src file in ' + JSON.stringify(file) + '.');
-            }
-            if (file.src.length > 1) {
-                grunt.fail.warn('You can only specify one src file in ' + JSON.stringify(file.src) + '.');
-            }
-            if (!grunt.file.exists(filepath)) {
-                grunt.fail.warn('Source file "' + filepath + '" not found.');
-            }
+        exec(cmd, function (error, stdout, stderr) {
 
-            // We use the number of commits as our revision
-            var cmd = 'git rev-list --count HEAD';
+            var revision = stdout.replace(/(\r\n|\n|\r)/gm, "");
+            var version = pkg.version + options.revisionPrefix + revision + options.revisionSuffix;
 
-            exec(cmd, function (error, stdout, stderr) {
+            definedFiles.forEach(function (file) {
 
-                var revision = stdout.replace(/(\r\n|\n|\r)/gm, "");
-                var version = pkg.version + options.revisionPrefix + revision + options.revisionSuffix;
+                var filepath = file.src[0];
+
+                if (file.src.length === 0) {
+                    grunt.fail.warn('You have to specify a valid src file in ' + JSON.stringify(file) + '.');
+                }
+                if (file.src.length > 1) {
+                    grunt.fail.warn('You can only specify one src file in ' + JSON.stringify(file.src) + '.');
+                }
+                if (!grunt.file.exists(filepath)) {
+                    grunt.fail.warn('Source file "' + filepath + '" not found.');
+                }
 
                 var content = grunt.file.read(filepath);
 

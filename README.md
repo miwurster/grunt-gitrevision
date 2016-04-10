@@ -49,9 +49,11 @@ grunt.initConfig({
             prefix: '[^\\-]version[\'"]?\\s*[:=]\\s*[\'"]'
         },
         your_target: {
-            files: {
-                'tmp/testing.js': ['test/fixtures/testing.js']
-            }
+            files: [
+                {
+                    'tmp/testing.js': ['test/fixtures/testing.js']
+                }
+            ]
         },
     },
 });
@@ -85,9 +87,11 @@ In this example, the default options are used to replace the version part `var v
 ```js
 gitrevision: {
     default_options: {
-        files: {
-            'tmp/testing.js': ['test/fixtures/testing.js']
-        }
+        files: [
+            {
+                'tmp/testing.js': ['test/fixtures/testing.js']
+            }
+        ]
     }
 }
 ```

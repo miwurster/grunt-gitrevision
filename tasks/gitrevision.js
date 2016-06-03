@@ -63,9 +63,9 @@ module.exports = function (grunt) {
                 } else {
                     grunt.log.ok('File "' + file.dest + '" created.');
                 }
-
-                done();
             });
+
+            done();
         });
     });
 };
